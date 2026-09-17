@@ -1,0 +1,246 @@
+/* ---------- Thème ---------- */
+:root {
+  --fond: #f4f1ea;
+  --fond-2: #ffffff;
+  --texte: #23201b;
+  --texte-doux: #6b6357;
+  --bord: #ddd5c7;
+  --accent: #8a5a2b;
+  --accent-clair: #f0e4d4;
+  --ok: #2e7d4f;
+  --ok-fond: #e3f3e9;
+  --ko: #b03636;
+  --ko-fond: #fbe6e6;
+  --ombre: 0 2px 10px rgba(60, 45, 25, .08);
+  --radius: 14px;
+}
+html[data-theme="dark"] {
+  --fond: #16181d;
+  --fond-2: #1e2128;
+  --texte: #e9e6e1;
+  --texte-doux: #a29c92;
+  --bord: #333844;
+  --accent: #d8a05e;
+  --accent-clair: #2c2820;
+  --ok: #5fc98b;
+  --ok-fond: #1e3327;
+  --ko: #ef7b7b;
+  --ko-fond: #37211f;
+  --ombre: 0 2px 12px rgba(0, 0, 0, .35);
+}
+
+* { box-sizing: border-box; }
+
+/* L'attribut hidden doit primer sur les display: grid/flex ci-dessous. */
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  background: var(--fond);
+  color: var(--texte);
+  line-height: 1.55;
+}
+
+h1, h2, h3 { line-height: 1.25; }
+
+/* ---------- Barre du haut ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--fond-2);
+  border-bottom: 1px solid var(--bord);
+  box-shadow: var(--ombre);
+}
+.topbar-inner {
+  max-width: 1100px; margin: 0 auto; padding: .6rem 1rem;
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+}
+.logo { font-size: 1.15rem; margin: 0; flex: 1 1 auto; }
+.modes { display: flex; gap: .4rem; }
+.mode-btn {
+  font: inherit; cursor: pointer;
+  padding: .5rem .9rem; border-radius: 999px;
+  border: 1px solid var(--bord); background: transparent; color: var(--texte-doux);
+}
+.mode-btn.is-active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.icon-btn {
+  font-size: 1.1rem; cursor: pointer; background: none;
+  border: 1px solid var(--bord); border-radius: 50%;
+  width: 2.2rem; height: 2.2rem; line-height: 1;
+}
+
+main { max-width: 1100px; margin: 0 auto; padding: 1.2rem 1rem 3rem; }
+
+.vue { display: none; }
+.vue.is-active { display: block; }
+.bloc { display: none; }
+.bloc.is-active { display: block; }
+
+/* ---------- Sous-modes et filtres ---------- */
+.sous-modes { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.chip {
+  font: inherit; cursor: pointer; padding: .4rem .8rem;
+  border-radius: 999px; border: 1px solid var(--bord);
+  background: var(--fond-2); color: var(--texte-doux);
+}
+.chip.is-active { background: var(--accent-clair); color: var(--accent); border-color: var(--accent); font-weight: 600; }
+
+.filtres { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+select, textarea {
+  font: inherit; padding: .45rem .6rem; border-radius: 8px;
+  border: 1px solid var(--bord); background: var(--fond-2); color: var(--texte);
+}
+textarea { width: 100%; resize: vertical; }
+.muted { color: var(--texte-doux); font-size: .9rem; }
+
+/* ---------- Boutons ---------- */
+.btn {
+  font: inherit; cursor: pointer; padding: .55rem 1.1rem;
+  border-radius: 10px; border: 1px solid var(--bord);
+  background: var(--fond-2); color: var(--texte);
+}
+.btn:hover { border-color: var(--accent); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn-ghost { background: transparent; }
+.btn-large { width: 100%; padding: .8rem; font-size: 1.05rem; margin-top: .6rem; }
+.btn-ok { border-color: var(--ok); color: var(--ok); }
+.btn-ko { border-color: var(--ko); color: var(--ko); }
+
+/* ---------- Flashcard ---------- */
+.carte-zone { perspective: 1600px; margin-bottom: 1rem; }
+.carte { cursor: pointer; outline: none; }
+.carte-inner {
+  display: grid; transform-style: preserve-3d;
+  transition: transform .55s cubic-bezier(.4, .2, .2, 1);
+}
+.carte.is-flipped .carte-inner { transform: rotateY(180deg); }
+.carte-face {
+  /* Les deux faces occupent la même cellule : la carte prend la hauteur de la plus haute. */
+  grid-area: 1 / 1;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  background: var(--fond-2); border: 1px solid var(--bord);
+  border-radius: var(--radius); box-shadow: var(--ombre);
+  padding: 1.6rem;
+}
+.carte-recto {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; min-height: 340px;
+}
+.carte-recto h2 { font-size: clamp(1.6rem, 5vw, 2.4rem); margin: .6rem 0; color: var(--accent); }
+.carte-verso { transform: rotateY(180deg); }
+.carte:focus-visible .carte-face { border-color: var(--accent); }
+.hint { color: var(--texte-doux); font-size: .9rem; }
+.badge {
+  display: inline-block; padding: .2rem .7rem; border-radius: 999px;
+  background: var(--accent-clair); color: var(--accent);
+  font-size: .8rem; letter-spacing: .04em; text-transform: uppercase;
+}
+
+.nav-cartes { display: flex; align-items: center; justify-content: center; gap: .8rem; margin-bottom: .6rem; flex-wrap: wrap; }
+.compteur { color: var(--texte-doux); font-size: .9rem; min-width: 5rem; text-align: center; }
+
+/* ---------- Contenu d'une fiche ---------- */
+.fiche-contenu h2 { margin: .2rem 0 .1rem; color: var(--accent); }
+.fiche-contenu .sous-titre { color: var(--texte-doux); font-size: .9rem; margin: 0 0 .8rem; }
+.champ { margin-bottom: .9rem; }
+.champ h3 {
+  font-size: .8rem; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--texte-doux); margin: 0 0 .25rem; font-family: system-ui, sans-serif;
+}
+.champ ul { margin: 0; padding-left: 1.1rem; }
+.champ li { margin-bottom: .15rem; }
+.champ p { margin: 0; }
+.tags { display: flex; flex-wrap: wrap; gap: .35rem; }
+.tag {
+  background: var(--accent-clair); color: var(--accent);
+  padding: .15rem .6rem; border-radius: 999px; font-size: .85rem;
+}
+
+.grille-fiches { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+.fiche {
+  background: var(--fond-2); border: 1px solid var(--bord);
+  border-radius: var(--radius); padding: 1.2rem; box-shadow: var(--ombre);
+}
+
+/* ---------- Frise ---------- */
+.frise { position: relative; padding-left: 1.4rem; border-left: 3px solid var(--bord); }
+.frise-item { position: relative; margin-bottom: 1.4rem; }
+.frise-item::before {
+  content: ""; position: absolute; left: -1.95rem; top: .45rem;
+  width: .8rem; height: .8rem; border-radius: 50%;
+  background: var(--accent); border: 2px solid var(--fond);
+}
+.frise-item h3 { margin: 0; color: var(--accent); }
+.frise-item .dates-frise { font-family: system-ui, sans-serif; font-size: .85rem; color: var(--texte-doux); }
+
+/* ---------- Tableau ---------- */
+.table-wrap { overflow-x: auto; border: 1px solid var(--bord); border-radius: var(--radius); background: var(--fond-2); }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th, td { border: 1px solid var(--bord); padding: .6rem .7rem; vertical-align: top; text-align: left; }
+th { background: var(--accent-clair); color: var(--accent); position: sticky; left: 0; }
+thead th { top: 0; z-index: 2; }
+td ul { margin: 0; padding-left: 1rem; }
+
+/* ---------- Quiz ---------- */
+.panneau {
+  background: var(--fond-2); border: 1px solid var(--bord);
+  border-radius: var(--radius); padding: 1.4rem; box-shadow: var(--ombre);
+  margin-bottom: 1rem;
+}
+.panneau h2 { margin-top: 0; }
+.reglage { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: .8rem 0; flex-wrap: wrap; }
+.reglage-types { border: 1px solid var(--bord); border-radius: 10px; padding: .8rem 1rem; }
+.reglage-types legend { padding: 0 .4rem; color: var(--texte-doux); font-size: .9rem; }
+.reglage-types label { display: block; margin: .3rem 0; cursor: pointer; }
+
+.quiz-entete { display: flex; align-items: center; gap: .8rem; margin-bottom: 1rem; }
+.barre { flex: 1; height: 8px; background: var(--bord); border-radius: 999px; overflow: hidden; }
+.barre-fill { height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+
+.quiz-consigne { color: var(--texte-doux); font-size: .9rem; margin: 0 0 .3rem; font-family: system-ui, sans-serif; }
+.quiz-question { font-size: 1.2rem; margin: 0 0 1.2rem; }
+.reponses { display: grid; gap: .55rem; }
+.reponse {
+  font: inherit; text-align: left; cursor: pointer;
+  padding: .7rem .9rem; border-radius: 10px;
+  border: 1px solid var(--bord); background: transparent; color: var(--texte);
+}
+.reponse:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-clair); }
+.reponse.bonne { background: var(--ok-fond); border-color: var(--ok); color: var(--ok); font-weight: 600; }
+.reponse.mauvaise { background: var(--ko-fond); border-color: var(--ko); color: var(--ko); }
+.reponse:disabled { cursor: default; }
+
+.libre { display: grid; gap: .6rem; }
+.libre-eval { display: flex; gap: .6rem; }
+.correction { background: var(--accent-clair); border-radius: 10px; padding: .8rem 1rem; }
+.correction ul { margin: .3rem 0 0; padding-left: 1.1rem; }
+
+.feedback { margin-top: 1rem; padding: .8rem 1rem; border-radius: 10px; }
+.feedback.juste { background: var(--ok-fond); color: var(--ok); }
+.feedback.faux { background: var(--ko-fond); color: var(--ko); }
+#quiz-suivant { margin-top: 1rem; }
+
+.score-final { font-size: 2rem; text-align: center; margin: 1rem 0; }
+.score-final .mention { display: block; font-size: 1rem; color: var(--texte-doux); }
+.bilan { display: grid; gap: .4rem; margin: 1rem 0; }
+.bilan-ligne { display: flex; align-items: center; gap: .6rem; font-size: .9rem; }
+.bilan-ligne .nom-mvt { flex: 0 0 11rem; }
+.bilan-jauge { flex: 1; height: 8px; background: var(--bord); border-radius: 999px; overflow: hidden; }
+.bilan-jauge span { display: block; height: 100%; background: var(--ok); }
+.revisions { display: grid; gap: .6rem; }
+.revision {
+  border-left: 3px solid var(--ko); padding: .5rem .8rem;
+  background: var(--ko-fond); border-radius: 0 8px 8px 0; font-size: .92rem;
+}
+.revision .att { color: var(--ok); }
+.actions-fin { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 1rem; }
+.stats-resume { margin-top: 1.2rem; font-size: .9rem; color: var(--texte-doux); }
+
+.pied { text-align: center; padding: 1.5rem 1rem 2.5rem; color: var(--texte-doux); font-size: .85rem; }
+
+@media (max-width: 600px) {
+  .logo { font-size: 1rem; width: 100%; }
+  .carte-face { padding: 1.1rem; }
+  .bilan-ligne .nom-mvt { flex: 0 0 7rem; }
+}

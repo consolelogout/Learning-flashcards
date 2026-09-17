@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flashcards — Les mouvements littéraires</title>
+<meta name="description" content="Réviser les grands mouvements littéraires français du XVIe au XXe siècle : mode apprentissage et mode contrôle.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <h1 class="logo">📚 Mouvements littéraires</h1>
+    <nav class="modes" role="tablist" aria-label="Modes de révision">
+      <button class="mode-btn is-active" data-mode="apprentissage" role="tab" aria-selected="true">🧠 Apprentissage</button>
+      <button class="mode-btn" data-mode="controle" role="tab" aria-selected="false">✅ Contrôle</button>
+    </nav>
+    <button id="theme-toggle" class="icon-btn" title="Changer de thème" aria-label="Changer de thème">🌙</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ====================== MODE APPRENTISSAGE ====================== -->
+  <section id="vue-apprentissage" class="vue is-active">
+
+    <div class="sous-modes">
+      <button class="chip is-active" data-sousmode="cartes">🃏 Flashcards</button>
+      <button class="chip" data-sousmode="fiches">📄 Fiches complètes</button>
+      <button class="chip" data-sousmode="frise">📈 Frise chronologique</button>
+      <button class="chip" data-sousmode="tableau">🧾 Tableau</button>
+    </div>
+
+    <div class="filtres">
+      <label for="filtre-siecle">Filtrer&nbsp;:</label>
+      <select id="filtre-siecle"></select>
+      <span id="compteur-filtre" class="muted"></span>
+    </div>
+
+    <!-- Flashcards -->
+    <div id="bloc-cartes" class="bloc is-active">
+      <div class="carte-zone">
+        <div id="carte" class="carte" tabindex="0" role="button" aria-label="Retourner la carte">
+          <div class="carte-inner">
+            <div class="carte-face carte-recto">
+              <span class="badge" id="carte-siecle"></span>
+              <h2 id="carte-titre"></h2>
+              <p class="hint">Cliquez (ou Espace) pour révéler la fiche</p>
+            </div>
+            <div class="carte-face carte-verso">
+              <div id="carte-contenu" class="fiche-contenu"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-cartes">
+        <button id="prec" class="btn">← Précédent</button>
+        <span id="progression-cartes" class="compteur"></span>
+        <button id="suiv" class="btn">Suivant →</button>
+      </div>
+      <div class="nav-cartes">
+        <button id="melanger" class="btn btn-ghost">🔀 Mélanger</button>
+        <button id="retourner" class="btn btn-ghost">🔄 Retourner</button>
+      </div>
+    </div>
+
+    <!-- Fiches complètes -->
+    <div id="bloc-fiches" class="bloc">
+      <div id="liste-fiches" class="grille-fiches"></div>
+    </div>
+
+    <!-- Frise -->
+    <div id="bloc-frise" class="bloc">
+      <div id="frise" class="frise"></div>
+    </div>
+
+    <!-- Tableau -->
+    <div id="bloc-tableau" class="bloc">
+      <div class="table-wrap"><table id="tableau-recap"></table></div>
+    </div>
+
+  </section>
+
+  <!-- ======================== MODE CONTRÔLE ========================= -->
+  <section id="vue-controle" class="vue">
+
+    <!-- Écran de réglages -->
+    <div id="quiz-accueil" class="bloc is-active">
+      <div class="panneau">
+        <h2>Mode contrôle</h2>
+        <p class="muted">Le site pose des questions et vérifie vos réponses. Choisissez vos réglages puis lancez le contrôle.</p>
+
+        <div class="reglage">
+          <label for="quiz-portee">Portée</label>
+          <select id="quiz-portee"></select>
+        </div>
+
+        <div class="reglage">
+          <label for="quiz-nb">Nombre de questions</label>
+          <select id="quiz-nb">
+            <option value="10">10 questions</option>
+            <option value="15" selected>15 questions</option>
+            <option value="20">20 questions</option>
+            <option value="30">30 questions</option>
+          </select>
+        </div>
+
+        <fieldset class="reglage-types">
+          <legend>Types de questions</legend>
+          <label><input type="checkbox" class="type-q" value="definition" checked> Reconnaître une définition</label>
+          <label><input type="checkbox" class="type-q" value="dates" checked> Retrouver les dates</label>
+          <label><input type="checkbox" class="type-q" value="auteur" checked> Situer un auteur</label>
+          <label><input type="checkbox" class="type-q" value="trait" checked> Reconnaître un principe / thème / procédé</label>
+          <label><input type="checkbox" class="type-q" value="chrono" checked> Ordre chronologique</label>
+          <label><input type="checkbox" class="type-q" value="libre" checked> Réponse libre (auto-évaluation)</label>
+        </fieldset>
+
+        <button id="lancer-quiz" class="btn btn-primary btn-large">▶ Commencer le contrôle</button>
+
+        <div id="stats-resume" class="stats-resume"></div>
+      </div>
+    </div>
+
+    <!-- Écran de question -->
+    <div id="quiz-jeu" class="bloc">
+      <div class="quiz-entete">
+        <span id="quiz-compteur" class="compteur"></span>
+        <div class="barre"><div id="quiz-barre" class="barre-fill"></div></div>
+        <span id="quiz-score" class="compteur"></span>
+      </div>
+
+      <div class="panneau">
+        <p class="quiz-consigne" id="quiz-consigne"></p>
+        <p class="quiz-question" id="quiz-question"></p>
+        <div id="quiz-reponses" class="reponses"></div>
+        <div id="quiz-libre" class="libre" hidden>
+          <textarea id="libre-saisie" rows="4" placeholder="Écrivez votre réponse de mémoire, puis affichez la correction…"></textarea>
+          <button id="libre-voir" class="btn">👁 Voir la réponse</button>
+          <div id="libre-correction" class="correction" hidden></div>
+          <div id="libre-eval" class="libre-eval" hidden>
+            <button class="btn btn-ok" data-eval="1">✅ Je savais</button>
+            <button class="btn btn-ko" data-eval="0">❌ Je ne savais pas</button>
+          </div>
+        </div>
+        <div id="quiz-feedback" class="feedback" hidden></div>
+        <button id="quiz-suivant" class="btn btn-primary" hidden>Question suivante →</button>
+      </div>
+      <button id="quiz-abandon" class="btn btn-ghost">Arrêter le contrôle</button>
+    </div>
+
+    <!-- Écran de résultats -->
+    <div id="quiz-resultats" class="bloc">
+      <div class="panneau">
+        <h2>Résultats</h2>
+        <div id="score-final" class="score-final"></div>
+        <div id="bilan-mouvements" class="bilan"></div>
+        <h3>Questions à revoir</h3>
+        <div id="revisions" class="revisions"></div>
+        <div class="actions-fin">
+          <button id="rejouer" class="btn btn-primary">↺ Nouveau contrôle</button>
+          <button id="reviser-erreurs" class="btn">🧠 Réviser les mouvements ratés</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<footer class="pied">
+  <p>Fiche de révision — Les principaux mouvements littéraires, du XVI<sup>e</sup> au XX<sup>e</sup> siècle.</p>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
