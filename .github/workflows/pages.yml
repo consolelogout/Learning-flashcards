@@ -1,8 +1,11 @@
 name: Déployer sur GitHub Pages
 
+# Prérequis (une seule fois) : Settings → Pages → Source : GitHub Actions.
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - claude/flashcards-learning-control-modes-nm5qil
   workflow_dispatch:
 
 permissions:
@@ -21,10 +24,17 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Configurer Pages
+        uses: actions/configure-pages@v5
+
+      - name: Préparer l'artefact (le site est déjà statique)
+        uses: actions/upload-pages-artifact@v3
         with:
           path: .
-      - id: deployment
+
+      - name: Déployer
+        id: deployment
         uses: actions/deploy-pages@v4

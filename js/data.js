@@ -92,7 +92,7 @@ const MOUVEMENTS = [
       "Molière (1622-1673)",
       "Racine (1639-1699)",
       "La Fontaine (1621-1695)",
-      "Bossuet (1627-1704)"
+      "Bossuet (1627-1674)"
     ]
   },
   {
@@ -124,7 +124,7 @@ const MOUVEMENTS = [
     auteurs: [
       "Voltaire (1694-1778)",
       "Montesquieu (1689-1755)",
-      "Rousseau (1712-1778)",
+      "Rousseau (1717-1778)",
       "Diderot (1713-1784)"
     ]
   },
@@ -376,10 +376,10 @@ const MOUVEMENTS = [
       "Rôle important des lieux et des objets"
     ],
     auteurs: [
-      "Robbe-Grillet (1922-2008)",
-      "Michel Butor (1926-2016)",
+      "Robbe-Grillet (né en 1922)",
+      "Michel Butor (né en 1926)",
       "Nathalie Sarraute (1900-1999)",
-      "Claude Simon (1913-2005)"
+      "Claude Simon (né en 1913)"
     ]
   }
 ];

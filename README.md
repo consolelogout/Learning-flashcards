@@ -42,9 +42,16 @@ pour signaler les mouvements les plus fragiles d'une session à l'autre.
 
 ## Utilisation
 
-Ouvrir `index.html` dans un navigateur, ou publier le dépôt sur GitHub Pages :
-**Settings → Pages → Source : GitHub Actions**. Le workflow `.github/workflows/pages.yml`
-publie automatiquement le site à chaque push sur `main`.
+Ouvrir `index.html` dans un navigateur — c'est tout, aucun serveur n'est nécessaire.
+
+### Publication sur GitHub Pages
+
+1. Dans le dépôt GitHub : **Settings → Pages → Build and deployment → Source : GitHub Actions**.
+2. C'est terminé : le workflow `.github/workflows/pages.yml` publie le site à chaque push
+   (il peut aussi être lancé à la main depuis l'onglet **Actions → Déployer sur GitHub Pages
+   → Run workflow**).
+
+Le site est alors en ligne à l'adresse `https://<utilisateur>.github.io/Learning-flashcards/`.
 
 ## Structure
 
@@ -60,7 +67,5 @@ Pour modifier ou compléter le contenu, il suffit d'éditer `js/data.js` : le re
 
 ## Note sur les données
 
-Le contenu reprend fidèlement la fiche d'origine. Quelques dates d'auteurs, visiblement
-erronées ou incomplètes sur la photocopie, ont été rétablies :
-Bossuet (1627-**1704**), Rousseau (**1712**-1778), et les dates de décès des auteurs du
-Nouveau Roman (Robbe-Grillet 1922-2008, Butor 1926-2016, Claude Simon 1913-2005).
+Le contenu reprend fidèlement la fiche d'origine, dates comprises.
+Pour corriger ou compléter quoi que ce soit, tout est rassemblé dans `js/data.js`.
