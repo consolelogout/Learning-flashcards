@@ -1,6 +1,6 @@
 name: Déployer sur GitHub Pages
 
-# Prérequis (une seule fois) : Settings → Pages → Source : GitHub Actions.
+# Le job active lui-même GitHub Pages au premier lancement (enablement: true).
 on:
   push:
     branches:
@@ -29,6 +29,9 @@ jobs:
 
       - name: Configurer Pages
         uses: actions/configure-pages@v5
+        with:
+          # Active GitHub Pages (source « GitHub Actions ») si ce n'est pas déjà fait.
+          enablement: true
 
       - name: Préparer l'artefact (le site est déjà statique)
         uses: actions/upload-pages-artifact@v3
