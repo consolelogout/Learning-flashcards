@@ -46,12 +46,18 @@ Ouvrir `index.html` dans un navigateur — c'est tout, aucun serveur n'est néce
 
 ### Publication sur GitHub Pages
 
-1. Dans le dépôt GitHub : **Settings → Pages → Build and deployment → Source : GitHub Actions**.
-2. C'est terminé : le workflow `.github/workflows/pages.yml` publie le site à chaque push
-   (il peut aussi être lancé à la main depuis l'onglet **Actions → Déployer sur GitHub Pages
-   → Run workflow**).
+Une seule manipulation, à faire une fois (elle exige les droits d'administration du dépôt,
+un workflow ne peut pas la faire à votre place) :
 
-Le site est alors en ligne à l'adresse `https://<utilisateur>.github.io/Learning-flashcards/`.
+1. Aller dans **Settings → Pages** du dépôt.
+2. Sous **Build and deployment → Source**, choisir **GitHub Actions**.
+
+Ensuite tout est automatique : le workflow `.github/workflows/pages.yml` publie le site à
+chaque push. Pour déclencher la toute première publication sans attendre un nouveau push,
+aller dans **Actions → Déployer sur GitHub Pages → Run workflow**.
+
+Le site sera en ligne à l'adresse :
+**https://consolelogout.github.io/Learning-flashcards/**
 
 ## Structure
 
