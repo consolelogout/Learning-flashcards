@@ -190,17 +190,23 @@ portee.innerHTML =
 let quiz = { questions: [], i: 0, score: 0, erreurs: [], parMvt: {} };
 
 /* --- Générateurs de questions --- */
+/* Les distracteurs sont toujours puisés dans l'ENSEMBLE des mouvements, jamais
+   dans le seul corpus filtré : un siècle ne compte parfois qu'un mouvement, et
+   le QCM n'afficherait alors que la bonne réponse. */
 function options(bonne, pool, n = 4) {
-  const faux = melange(pool.filter((x) => x !== bonne)).slice(0, n - 1);
+  const faux = melange([...new Set(pool)].filter((x) => x !== bonne)).slice(0, n - 1);
   return melange([bonne, ...faux]);
 }
+
+const TOUS_LES_NOMS = MOUVEMENTS.map((m) => m.nom);
+const TOUTES_LES_DATES = MOUVEMENTS.map((m) => m.dates);
 
 function qDefinition(m, corpus) {
   return {
     mvt: m.id,
     consigne: "Reconnaître une définition",
     question: `« ${m.definition} »<br><em>De quel mouvement s'agit-il ?</em>`,
-    choix: options(m.nom, corpus.map((x) => x.nom)),
+    choix: options(m.nom, TOUS_LES_NOMS),
     bonne: m.nom
   };
 }
@@ -210,7 +216,7 @@ function qDates(m, corpus) {
     mvt: m.id,
     consigne: "Retrouver les dates",
     question: `À quelle période situe-t-on <strong>${m.nom}</strong> ?`,
-    choix: options(m.dates, corpus.map((x) => x.dates)),
+    choix: options(m.dates, TOUTES_LES_DATES),
     bonne: m.dates
   };
 }
@@ -221,7 +227,7 @@ function qAuteur(m, corpus) {
     mvt: m.id,
     consigne: "Situer un auteur",
     question: `À quel mouvement rattache-t-on <strong>${auteur}</strong> ?`,
-    choix: options(m.nom, corpus.map((x) => x.nom)),
+    choix: options(m.nom, TOUS_LES_NOMS),
     bonne: m.nom,
     aide: `${m.nom} (${m.dates})`
   };
@@ -235,14 +241,15 @@ function qTrait(m, corpus) {
     mvt: m.id,
     consigne: `Reconnaître un ${libelle}`,
     question: `« ${trait} »<br><em>Ce ${libelle} caractérise quel mouvement ?</em>`,
-    choix: options(m.nom, corpus.map((x) => x.nom)),
+    choix: options(m.nom, TOUS_LES_NOMS),
     bonne: m.nom
   };
 }
 
 function qChrono(m, corpus) {
-  if (corpus.length < 4) return qDates(m, corpus);
-  const lot = melange(corpus.filter((x) => x.id !== m.id)).slice(0, 3).concat(m);
+  // Il faut quatre mouvements à comparer : on élargit si le siècle n'en fournit pas assez.
+  const base = corpus.length >= 4 ? corpus : MOUVEMENTS;
+  const lot = melange(base.filter((x) => x.id !== m.id)).slice(0, 3).concat(m);
   const cherchePlusAncien = Math.random() < 0.5;
   const trie = lot.slice().sort((a, b) => a.debut - b.debut);
   const bonne = cherchePlusAncien ? trie[0] : trie[trie.length - 1];
